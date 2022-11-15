@@ -1,8 +1,8 @@
 ## A Fazeres:
 
-- [ ] Implementar typeorm na api
+- [x] Implementar typeorm na api
 - [ ] Implementar conexão com banco de dados
-- [ ] Definir qual banco de dados será utilizado
+- [x] Definir qual banco de dados será utilizado: Mysql
 - [ ] Implementar as ações das funções de userController
 - [ ] Criar middleware para autenticação
 - [ ] Implementar autenticação com jwt
