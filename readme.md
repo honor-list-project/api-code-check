@@ -9,4 +9,5 @@
 - [ ] Implementar login.
 - [ ] Adicionar regra em update que um SubAdmin pode setar cargo apenas de funcionario para user e de user para funcionario em outros usuários que não seja ele mesmo.
 - [ ] Adicionar regra: Um admin não pode ser deletado por outro admin e um subadmin não pode deletar admin nem subadmin.
+- [ ] Adicionar regra: Os únicos que podem deletar usuários são os subadmin e admin.
 - [ ] Final de tudo, Criar documentação para uso da mesma.

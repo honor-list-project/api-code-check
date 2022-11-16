@@ -117,9 +117,19 @@ class UserController implements IuserController {
     }
 
     async deleteUser(req:Request, res: Response): Promise<Response>{
-        try{
+        const { id } = req.params;
 
-            return res.status(200).json({message: "success", data: "Welcome to the users route"});
+        try{
+            const userRepository = (await Db).getRepository(User);
+            const userRemove = await userRepository.findOneBy({id: id});
+
+            if(userRemove == null){
+                return res.status(404).json({message: 'user not found'});
+            }
+
+            await userRepository.remove(userRemove);
+
+            return res.status(200).json({message: "success"});
         }catch(e){
             console.error(e);
             return res.status(500).json({message: "Error"});
