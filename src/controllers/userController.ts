@@ -1,13 +1,13 @@
 import { Response, Request } from 'express';
 import Db from '../database/configDb';
-import { User, CargoUser } from '../models/userModel';
+import { User, CargoUser, isDataExistInEnum} from '../models/userModel';
 import { createHash, compareHash } from '../utils/hash';
 
 interface IuserController{
     registerUser(req: Request, res: Response): Promise<Response>;
     readAllUsers(req: Request, res: Response): Promise<Response>;
     readOneUser(req: Request, res: Response): Promise<Response>;
-    updadeUser(req: Request, res: Response): Promise<Response>;
+    updateUser(req: Request, res: Response): Promise<Response>;
     deleteUser(req: Request, res: Response): Promise<Response>;
 }
 
@@ -62,19 +62,54 @@ class UserController implements IuserController {
     }
 
     async readOneUser(req:Request, res: Response): Promise<Response>{
-        try{
+        const { id } = req.params;
 
-            return res.status(200).json({message: "success", data: "Welcome to the users route"});
+        try{
+            const userRepository = (await Db).getRepository(User)
+            // const user = await userRepository.findOneBy({id: id});
+            const user = await userRepository.findOne({
+                where: {
+                    id: id
+                },
+                select: {
+                    id: true,
+                    cpf: true,
+                    nome: true,
+                    email: true,
+                    telefone: true,
+                    cargo: true,
+                }
+            });
+
+            if(user == null){
+                return res.status(404).json({message: 'user not found!'});
+            }
+
+            return res.status(200).json({message: "success", data: user});
         }catch(e){
             console.error(e);
             return res.status(500).json({message: "Error"});
         }
     }
 
-    async updadeUser(req:Request, res: Response): Promise<Response>{
+    async updateUser(req:Request, res: Response): Promise<Response>{
+        const { cargo, id } = req.body;
         try{
+            const userRepository = (await Db).getRepository(User);
+            const userUpdate = await userRepository.findOneBy({id: id,});
 
-            return res.status(200).json({message: "success", data: "Welcome to the users route"});
+            if(userUpdate == null){
+                return res.status(404).json({message: 'user not found'})
+            }
+
+            if(cargo.length === 0 || !isDataExistInEnum(cargo)){
+                return res.status(401).json({message: "invalid data"});
+            }
+
+            userUpdate.cargo = cargo;
+            await userRepository.save(userUpdate);
+
+            return res.status(200).json({message: "data updated successfully"});
         }catch(e){
             console.error(e);
             return res.status(500).json({message: "Error"});
