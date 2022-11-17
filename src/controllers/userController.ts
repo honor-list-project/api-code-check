@@ -136,14 +136,14 @@ class UserController implements IuserController {
         const userReq = req.userReq;
 
         try{
-            if(id == userReq.id){
+            if(id === userReq.id){
                 return res.status(401).json({message: 'Unauthorized'});
             }
 
-            if(!isDataExistInEnum(userReq.cargo) || userReq.cargo !== 'Admin'){
+            if(userReq.cargo !== 'Admin'){
                 return res.status(401).json({message: 'Unauthorized'});
             }
-            
+
             const userRepository = (await Db).getRepository(User);
             const userUpdate = await userRepository.findOneBy({id: id,});
             
@@ -167,10 +167,23 @@ class UserController implements IuserController {
 
     async deleteUser(req:Request, res: Response): Promise<Response>{
         const { id } = req.params;
+        const userReq = req.userReq;
 
         try{
+            if(id == userReq.id){
+                return res.status(401).json({message: 'Unauthorized'});
+            }
+
+            if(userReq.cargo !== CargoUser.ADM){
+                return res.status(401).json({message: 'Unauthorized'});
+            }
+
             const userRepository = (await Db).getRepository(User);
             const userRemove = await userRepository.findOneBy({id: id});
+
+            if(userRemove.cargo === 'Admin'){
+                return res.status(401).json({message: 'Unauthorized'});
+            }
 
             if(userRemove == null){
                 return res.status(404).json({message: 'user not found'});

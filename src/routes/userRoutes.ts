@@ -7,7 +7,7 @@ userRoutes.get('/', auth, UserController.readAllUsers);
 userRoutes.get('/:id', UserController.readOneUser);
 userRoutes.post('/register', UserController.registerUser);
 userRoutes.put('/', auth, UserController.updateUser);
-userRoutes.delete('/delete/:id', UserController.deleteUser);
+userRoutes.delete('/delete/:id', auth, UserController.deleteUser);
 userRoutes.post('/login', UserController.loginUser);
 
 export default userRoutes;
