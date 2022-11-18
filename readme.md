@@ -14,10 +14,43 @@
 
 ## Variaveis de ambiente necessárias para o funcionamento da API.
 **OBS**: Os dados abaixo nas variaveis de ambiente são apenas para exemplificação.
-JWT_KEY = 1234
-API_PORT = 3030
+- JWT_KEY = 1234
+- API_PORT = 3030
 
-## Regras das rotas
+## **Documentação da API**
 
-### Update
-Apenas Admin pode fazer update em um usuarios, porém ele não pode dar admin a ninguém.
+`/`
+- lista todos os usuários.
+- tipo: **GET**
+
+`/:id`
+- lista os dados de um usuário.
+- tipo: **GET**
+
+`/register`
+- responsavel por registrar um novo usuário.
+- tipo: **POST**
+- a rota deve receber por body: `{ nome, email, password, cpf, telefone }`
+
+`/login`
+- responsavel por autenticar o usuário (Fazer login).
+- tipo: **POST**
+- a rota deve receber por body: `{ email, password }`
+
+`/`
+- responsavel por alterar dados de um usuário.
+- regras:
+  - Apenas Admin's e SubAdmin's podem fazer update em usuários.
+  - SubAdmin pode setar apenas os seguintes cargos: `User, Funcionario`
+  - Os mesmos não podem alterar os dados de si mesmos.
+- tipo: **PUT**
+- **header**: `Authorization` com `token` do usuário
+- a rota deve receber por body: `{ id, cargo }`
+
+`/delete/:id`
+- responsavel por alterar dados de um usuário.
+- regras:
+  - Apenas admin's podem deletar usuários.
+  - Admin's não conseguem deletar outros Admin's.
+- tipo: **DELETE**
+- **header**: `Authorization` com `token` do usuário

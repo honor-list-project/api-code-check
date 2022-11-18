@@ -8,7 +8,6 @@ export enum CargoUser {
     FUNCIONARIO = 'Funcionario'
 }
 
-//verifica se o valor informado existe dentro do enum de Cargos do Usuário
 const valuesUserCargo = {
     [CargoUser.ADM]: true,
     [CargoUser.USER]: true,
@@ -16,6 +15,7 @@ const valuesUserCargo = {
     [CargoUser.FUNCIONARIO]: true,
 }
 
+//verifica se o valor informado existe dentro do enum de Cargos do Usuário
 export const isDataExistInEnum = (value:string) => {
     return valuesUserCargo[value] || false
 }

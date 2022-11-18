@@ -140,7 +140,11 @@ class UserController implements IuserController {
                 return res.status(401).json({message: 'Unauthorized'});
             }
 
-            if(userReq.cargo !== 'Admin'){
+            if(!["Admin","SubAdmin"].includes(userReq.cargo)){
+                return res.status(401).json({message: 'Unauthorized'});
+            }
+
+            if(userReq.cargo === 'SubAdmin' && !["User","Funcionario"].includes(cargo)){
                 return res.status(401).json({message: 'Unauthorized'});
             }
 
@@ -170,9 +174,9 @@ class UserController implements IuserController {
         const userReq = req.userReq;
 
         try{
-            if(id == userReq.id){
+            if(id === userReq.id){
                 return res.status(401).json({message: 'Unauthorized'});
-            }
+            }   
 
             if(userReq.cargo !== CargoUser.ADM){
                 return res.status(401).json({message: 'Unauthorized'});

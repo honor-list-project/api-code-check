@@ -6,6 +6,8 @@ import "./database/configDb";
 import userRoutes from './routes/userRoutes';
 const app = Express();
 
+//Configurações de conexão e host's
+app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
 app.use(Cors());
 app.use(userRoutes);
