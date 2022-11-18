@@ -12,4 +12,4 @@ app.use(Express.json());
 app.use(Cors());
 app.use(userRoutes);
 
-app.listen( process.env.API_PORT ?? 3333, () => console.log('Hello Server'));
+app.listen( process.env.API_PORT ?? 3333, () => console.log(`Server is running...`));
