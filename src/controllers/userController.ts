@@ -35,7 +35,25 @@ class UserController implements IuserController {
             const userRepository = (await Db).getRepository(User);
             await userRepository.save(user);
 
-            return res.status(200).json({message: "success"});
+            await jwt.sign(
+                {
+                    id: user.id,
+                    cargo: user.cargo
+                },
+                process.env.JWT_KEY,
+                { expiresIn: '24h' },
+                (err, token) => {
+                    if(err){
+                        return res.status(500).json({message: "Error in server"});
+                    }
+                    return  res.status(200).json({
+                        message: 'success',
+                        token: token
+                    })
+                }
+            );
+
+            // return res.status(200).json({message: "success"});
         }catch(e){
             console.error(e);
             return res.status(500).json({message: "Error"});
